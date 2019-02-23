@@ -134,6 +134,9 @@ public class ZamowienieTest {
         Pozycja pozycja2 = new Pozycja("Chleb", 2, 8.5);
 
 
+
+
+
         listaPozycji.add(pozycja);
 
         listaPozycji.add(pozycja2);
