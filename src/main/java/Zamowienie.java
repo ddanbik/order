@@ -56,18 +56,17 @@
 //}
 
 
-import lombok.AllArgsConstructor;
-
-import lombok.Getter;
-
-import lombok.NoArgsConstructor;
-
-import lombok.Setter;
+import lombok.*;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Scanner;
 
 
 @NoArgsConstructor
@@ -77,6 +76,8 @@ import java.util.List;
 @Getter
 
 @Setter
+
+@EqualsAndHashCode
 
 public class Zamowienie {
 
@@ -162,6 +163,53 @@ public class Zamowienie {
                 suma = suma + pozycja.obliczWartoscZRabatem();
             }
             return suma;
+    }
+
+
+    public static void  zapiszZanowienie(Zamowienie z, String nazwaPliku) {
+
+        try {
+            PrintWriter printWriter = new PrintWriter("pliki/" + nazwaPliku);
+//            printWriter.println("Test");
+
+            for (Pozycja pozycja : z.getPozycje()) {
+                printWriter.print(pozycja.getNazwaTowaru());
+                printWriter.print("~");
+                printWriter.print(pozycja.getIleSztuk());
+                printWriter.print("~");
+                printWriter.print(pozycja.getCena());
+                printWriter.println();
+            }
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Zamowienie wczytajZamowienie(String nazwaPliku)  {
+
+        try {
+            Scanner scanner = new Scanner(new File("pliki/" + nazwaPliku));
+            Zamowienie zamowienie = new Zamowienie();
+
+            while (scanner.hasNextLine()) {
+                String odczyt = scanner.nextLine();
+                String[] split = odczyt.split("~");
+//                System.out.println(split[0]);
+//                System.out.println(split[1]);
+//                try {
+                    Pozycja pozycja = new Pozycja(split[0], Integer.valueOf(split[1]), Double.valueOf(split[2]));
+                    zamowienie.dodajPozycje(pozycja);
+//                } catch (NumberFormatException e) {
+//                    System.out.println("Nie mogę odczytać pozycji:" + odczyt);
+//                }
+
+            }
+            return zamowienie;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

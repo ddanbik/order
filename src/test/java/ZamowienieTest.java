@@ -477,6 +477,24 @@ public class ZamowienieTest {
         System.out.println(zamowienie10);
     }
 
+    @Test
+    public void testZapisuDoPliku() {
+        //given
+        Zamowienie zamowienie = new Zamowienie();
+        //when
+        zamowienie.dodajPozycje(new Pozycja("browar", 20, 1.5));
+        zamowienie.dodajPozycje(new Pozycja("woda", 10, 1.2));
+
+        Zamowienie.zapiszZanowienie(zamowienie, "z1.txt");
+        //then
+//        Zamowienie.wczytajZamowienie("z1.txt");
+        assertEquals(zamowienie.getPozycje(),Zamowienie.wczytajZamowienie("z1.txt").getPozycje());
+        assertEquals(zamowienie, Zamowienie.wczytajZamowienie("z1.txt"));
+
+
+
+    }
+
 
 }
 
